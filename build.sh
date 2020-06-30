@@ -17,21 +17,19 @@ if [[ -z $CPU_COUNT ]]; then
     export CPU_COUNT=1
 fi
 
-if [[ -z $FERMI_REPOMAN_LABEL ]]; then
-    export FERMI_REPOMAN_LABEL=extensive_tagging
+if [[ -z $FERMI_REF ]]; then
+    export FERMI_REF=extensive_tagging
 fi
 
-echo ${FERMI_REPOMAN_LABEL}
+# echo ${FERMI_REF}
 
 if [[ ! -z $FERMI_NO_CHECKOUT ]]; then
     echo "Skipping repoman checkout"
-elif [[ "$FERMI_REPOMAN_LABEL" == "master" ]]; then
+elif [[ "$FERMI_REF" == "master" ]]; then
     echo "master"
     repoman --remote-base https://github.com/fermi-lat checkout --force --develop Fermitools-conda
 else
-    echo "not master"
-    echo "${FERMI_REPOMAN_LABEL}"
-    repoman --remote-base https://github.com/fermi-lat checkout --force --develop Fermitools-conda ${FERMI_REPOMAN_LABEL}
+    repoman --remote-base https://github.com/fermi-lat checkout --force --develop Fermitools-conda ${FERMI_REF}
 fi
 
 
