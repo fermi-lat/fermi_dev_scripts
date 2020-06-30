@@ -1,19 +1,18 @@
 #!/usr/bin/env bash
 
-if [[ -z $FERMI_CONDA_TAG ]]; then
-  FERMI_CONDA_TAG=1.3.4
+## Default Fermi Version if none is given.
+if [[ -z $FERMI_CONDA_VERSION ]]; then
+  FERMI_CONDA_VERSION=1.9.9
+  FERMI_GIT_TAG="TestTag-${FERMI_CONDA_VERSION}"
 fi
 
-FERMI_GIT_TAG="TestTag-${FERMI_CONDA_TAG}"
-
-# TODO pattern match python version and add py2 label if necessary
-# if [[ -z $PYTHON_VERSION ]]; then
-#     PYTHON_VERSION=3.7
-# fi
-
+## Fermitools Reference (Tag, Branch or SHA). Defaults to conda-version if blank
+if [[ -z $FERMI_REF ]]; then
+  FERMI_REF=${FERMI_GIT_TAG}
+fi
 
 if [[ -z $FERMI_CONDA_ENV ]]; then
-    FERMI_CONDA_ENV="fermi-bld-explicit-${FERMI_CONDA_TAG}"
+    FERMI_CONDA_ENV="fermi-bld-explicit-${FERMI_REF}"
 fi
 
 if [[ -z $FERMI_CONDA_CHANNELS ]]; then
@@ -34,6 +33,7 @@ fi
 
 # echo "PYTHON_VERSION         = ${PYTHON_VERSION}"
 # echo "CONDA_PATH             = ${CONDA_PATH}"
+echo "FERMI_REF              = ${FERMI_REF}"
 echo "FERMI_CONDA_ENV        = ${FERMI_CONDA_ENV}"
 echo "FERMI_CONDA_CHANNELS   = ${FERMI_CONDA_CHANNELS}"
 echo "CONDA_CHANNELS         = ${CONDA_CHANNELS}"
@@ -42,7 +42,7 @@ echo "EXPLICIT_DEPS_REPO     = ${EXPLICIT_DEPS_REPO}"
 # Make sure we have conda setup
 # . $CONDA_PATH/etc/profile.d/conda.sh
 
-git clone --quiet --branch $FERMI_GIT_TAG "https://github.com/fermi-lat/${EXPLICIT_DEPS_REPO}.git"
+git clone --quiet --branch $FERMI_REF "https://github.com/fermi-lat/${EXPLICIT_DEPS_REPO}.git"
 
 conda create -y --name $FERMI_CONDA_ENV --file "${EXPLICIT_DEPS_REPO}/explicit-deps.txt"
 
