@@ -25,6 +25,13 @@ export CPU_COUNT=32
 ./build.sh
 ```
 
+## Disable Repoman checkout
+
+```
+export FERMI_NO_CHECKOUT
+./build.sh
+```
+
 
 # TODO
 
