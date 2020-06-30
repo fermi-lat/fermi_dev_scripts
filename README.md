@@ -20,15 +20,26 @@ conda activate my_fermi_env
 ## Optional Repoman checkout and scons build
 
 ```
+# Linux
 export FERMI_REPOMAN_LABEL=TestTag-1.9.9
-export CPU_COUNT=32
+export CPU_COUNT=4
+./build.sh
+```
+
+
+```
+# MacOSX
+export FERMI_REPOMAN_LABEL=TestTag-1.9.9
+export CPU_COUNT=4
+export CONDA_BUILD_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk  
+export MACOSX_DEPLOYMENT_TARGET=10.9
 ./build.sh
 ```
 
 ## Disable Repoman checkout
 
 ```
-export FERMI_NO_CHECKOUT
+export FERMI_NO_CHECKOUT=true
 ./build.sh
 ```
 
