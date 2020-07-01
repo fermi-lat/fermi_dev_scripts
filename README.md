@@ -37,7 +37,7 @@ export MACOSX_DEPLOYMENT_TARGET=10.9
 Create a conda environment from the exact dependency tarballs used to create the original build environment.
 
 ```
-./conda_fermi_deps_explicit.sh
+./conda_fermi_build_deps_explicit.sh
 conda activate my_fermi_env
 ```
 
