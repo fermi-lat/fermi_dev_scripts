@@ -1,14 +1,8 @@
 #!/usr/bin/env bash
 
-## Default Fermi Version if none is given.
-if [[ -z $FERMI_CONDA_VERSION ]]; then
-  FERMI_CONDA_VERSION=1.9.9
-  FERMI_GIT_TAG="TestTag-${FERMI_CONDA_VERSION}"
-fi
-
 ## Fermitools Reference (Tag, Branch or SHA). Defaults to conda-version if blank
 if [[ -z $FERMI_REF ]]; then
-  FERMI_REF=${FERMI_GIT_TAG}
+  FERMI_REF=master
 fi
 
 if [[ -z $FERMI_CONDA_ENV ]]; then
