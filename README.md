@@ -22,6 +22,12 @@ export CPU_COUNT=4
 export FERMI_REF=TestTag-1.9.9
 export FERMI_CONDA_ENV=my_fermi_env
 export CPU_COUNT=4
+```
+
+Optionally on MacOSX you can set your `CONDA_BUILD_SYSROOT` and `MACOSX_DEPLOYMENT_TARGET` variables. If left unset they will be defaulted to the values below.
+[MacOSX builds require an Xcode SDK file.](https://docs.conda.io/projects/conda-build/en/latest/resources/compiler-tools.html#macos-sdk)
+
+```
 export CONDA_BUILD_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk  
 export MACOSX_DEPLOYMENT_TARGET=10.9
 ```
@@ -31,6 +37,7 @@ export MACOSX_DEPLOYMENT_TARGET=10.9
 Create a conda environment from the exact dependency tarballs used to create the original build environment.
 
 ```
+./conda_fermi_deps_explicit.sh
 conda activate my_fermi_env
 ```
 
@@ -40,20 +47,16 @@ conda activate my_fermi_env
 ./build.sh
 ```
 
-## Disable Repoman checkout
+## Disable Repoman checkout during the build
 
 ```
 export FERMI_NO_CHECKOUT=true
 ./build.sh
 ```
 
+## Disable SCONS Install step during the build
 
-# TODO
-
-## OR Create a conda environment populated with build-time dependencies (Mutable).
-
-Create a conda environment from the loose dependency requirements enforced by conda's SAT solver.
-
-
-`export FERMI_CONDA_VERSION=1.9.9`
-`./conda_fermi_deps.sh`
+```
+export FERMI_NO_INSTALL=true
+./build.sh
+```

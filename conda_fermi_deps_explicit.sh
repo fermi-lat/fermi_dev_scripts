@@ -12,15 +12,7 @@ if [[ -z $FERMI_REF ]]; then
 fi
 
 if [[ -z $FERMI_CONDA_ENV ]]; then
-    FERMI_CONDA_ENV="fermi-bld-explicit-${FERMI_REF}"
-fi
-
-if [[ -z $FERMI_CONDA_CHANNELS ]]; then
-   FERMI_CONDA_CHANNELS="-c fermi"
-fi
-
-if [[ -z $CONDA_CHANNELS ]]; then
-   CONDA_CHANNELS="conda-forge"
+    FERMI_CONDA_ENV="fermi-bld-${FERMI_REF}"
 fi
 
 EXPLICIT_DEPS_REPO="Fermitools-explicit-build-deps"
@@ -31,12 +23,8 @@ else
   EXPLICIT_DEPS_REPO="${EXPLICIT_DEPS_REPO}-linux"
 fi
 
-# echo "PYTHON_VERSION         = ${PYTHON_VERSION}"
-# echo "CONDA_PATH             = ${CONDA_PATH}"
 echo "FERMI_REF              = ${FERMI_REF}"
 echo "FERMI_CONDA_ENV        = ${FERMI_CONDA_ENV}"
-echo "FERMI_CONDA_CHANNELS   = ${FERMI_CONDA_CHANNELS}"
-echo "CONDA_CHANNELS         = ${CONDA_CHANNELS}"
 echo "EXPLICIT_DEPS_REPO     = ${EXPLICIT_DEPS_REPO}"
 
 # Make sure we have conda setup
