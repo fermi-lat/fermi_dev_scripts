@@ -44,19 +44,33 @@ conda activate my_fermi_env
 ## Optional Repoman checkout and scons build
 
 ```
-./build.sh
+source build.sh
 ```
-
 ## Disable Repoman checkout during the build
 
 ```
 export FERMI_NO_CHECKOUT=true
-./build.sh
+source build.sh
+```
+
+
+## Disable SCONS build
+
+```
+export FERMI_NO_BUILD=true
+source build.sh
 ```
 
 ## Disable SCONS Install step during the build
 
 ```
 export FERMI_NO_INSTALL=true
-./build.sh
+source build.sh
+```
+
+## Disable Post-install activation script
+
+```
+export FERMI_NO_ACTIVATE=true
+source build.sh
 ```

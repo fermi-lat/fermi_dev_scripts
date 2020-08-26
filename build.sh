@@ -37,61 +37,65 @@ fi
 
 
 
-# Add optimization
-export CFLAGS="${CFLAGS}"
-export CXXFLAGS="-std=c++17 ${CXXFLAGS}"
+if [[ ! -z $FERMI_NO_BUILD ]]; then
+    echo "Skipping BUILD Step."
+else
+  # Add optimization
+  export CFLAGS="${CFLAGS}"
+  export CXXFLAGS="-std=c++17 ${CXXFLAGS}"
 
-# Add rpaths needed for our compilation
-export LDFLAGS="${LDFLAGS} -Wl,-rpath,${PREFIX}/lib/${condaname}:${PREFIX}/lib"
+  # Add rpaths needed for our compilation
+  export LDFLAGS="${LDFLAGS} -Wl,-rpath,${PREFIX}/lib/${condaname}:${PREFIX}/lib"
 
-if [ "$(uname)" == "Darwin" ]; then
+  if [ "$(uname)" == "Darwin" ]; then
 
-    if [[ -z $CONDA_BUILD_SYSTOOT ]]; then
-       CONDA_BUILD_SYSROOT="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
-    fi
+      if [[ -z $CONDA_BUILD_SYSTOOT ]]; then
+         CONDA_BUILD_SYSROOT="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+      fi
 
-    if [[ -f $CONDA_BUILD_SYSROOT ]]; then
-      echo "\n"
-      echo "MacOSX Builds require an Xcode SDK to supply standard library header information, but none was found at ${CONDA_BUILD_SYSROOT}"
-      echo "See https://docs.conda.io/projects/conda-build/en/latest/resources/compiler-tools.html#macos-sdk for details and alternatives."
-      echo "\n"
-      exit 1
-    fi
+      if [[ -f $CONDA_BUILD_SYSROOT ]]; then
+        echo "\n"
+        echo "MacOSX Builds require an Xcode SDK to supply standard library header information, but none was found at ${CONDA_BUILD_SYSROOT}"
+        echo "See https://docs.conda.io/projects/conda-build/en/latest/resources/compiler-tools.html#macos-sdk for details and alternatives."
+        echo "\n"
+        exit 1
+      fi
 
-    if [[ -z $MACOSX_DEPLOYMENT_TARGET ]]; then
-       MACOSX_DEPLOYMENT_TARGET="10.9"
-    fi
+      if [[ -z $MACOSX_DEPLOYMENT_TARGET ]]; then
+         MACOSX_DEPLOYMENT_TARGET="10.9"
+      fi
 
-    # If Mac OSX then set sysroot flag (see conda_build_config.yaml)
-    export CFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} ${CFLAGS}"
-    export CXXFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET} ${CXXFLAGS}"
-    export LDFLAGS="${LDFLAGS} -headerpad_max_install_names"
+      # If Mac OSX then set sysroot flag (see conda_build_config.yaml)
+      export CFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} ${CFLAGS}"
+      export CXXFLAGS="-isysroot ${CONDA_BUILD_SYSROOT} -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET} ${CXXFLAGS}"
+      export LDFLAGS="${LDFLAGS} -headerpad_max_install_names"
 
+  fi
+
+
+  echo "FERMI_REF      = ${FERMI_REF}"
+  echo "CONDA_PREFIX   = ${PREFIX}"
+  echo "CPU_COUNT      = ${CPU_COUNT}"
+  echo "C Compiler     = ${CC}"
+  echo "C++ Compiler   = ${CXX}"
+  echo "CFLAGS         = ${CFLAGS}"
+  echo "CXXFLAGS       = ${CXXFLAGS}"
+  echo "LDFLAGS        = ${LDFLAGS}"
+
+
+  scons -C ScienceTools \
+        --site-dir=../SConsShared/site_scons \
+        --conda=${PREFIX} \
+        --use-path \
+        -j ${CPU_COUNT} \
+        --with-cc="${CC}" \
+        --with-cxx="${CXX}" \
+        --ccflags="${CFLAGS}" \
+        --cxxflags="${CXXFLAGS}" \
+        --ldflags="${LDFLAGS}" \
+        --compile-opt \
+        all
 fi
-
-
-echo "FERMI_REF      = ${FERMI_REF}"
-echo "CONDA_PREFIX   = ${PREFIX}"
-echo "CPU_COUNT      = ${CPU_COUNT}"
-echo "C Compiler     = ${CC}"
-echo "C++ Compiler   = ${CXX}"
-echo "CFLAGS         = ${CFLAGS}"
-echo "CXXFLAGS       = ${CXXFLAGS}"
-echo "LDFLAGS        = ${LDFLAGS}"
-
-
-scons -C ScienceTools \
-      --site-dir=../SConsShared/site_scons \
-      --conda=${PREFIX} \
-      --use-path \
-      -j ${CPU_COUNT} \
-      --with-cc="${CC}" \
-      --with-cxx="${CXX}" \
-      --ccflags="${CFLAGS}" \
-      --cxxflags="${CXXFLAGS}" \
-      --ldflags="${LDFLAGS}" \
-      --compile-opt \
-      all
 
 # Install in a place where conda will find the ST
 
@@ -178,3 +182,9 @@ else
     # cp $RECIPE_DIR/deactivate.csh $PREFIX/etc/conda/deactivate.d/deactivate_${condaname}.csh
 fi
 
+if [[ ! -z $FERMI_NO_ACTIVATE ]]; then
+    echo "Skipping activation script"
+else
+    echo "Sourcing activation script"
+    source Fermitools-conda/activate.sh
+fi
