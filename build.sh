@@ -47,7 +47,7 @@ else
   # Add rpaths needed for our compilation
   export LDFLAGS="${LDFLAGS} -Wl,-rpath,${PREFIX}/lib/${condaname}:${PREFIX}/lib"
 
-  if [ "$(uname)" == "Darwin" ]; then
+  if [[ "$(uname)" == "Darwin" ]]; then
 
       if [[ -z $CONDA_BUILD_SYSTOOT ]]; then
          CONDA_BUILD_SYSROOT="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"

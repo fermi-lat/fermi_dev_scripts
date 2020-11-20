@@ -36,7 +36,7 @@ def set_system_envvars():
     """Set the system / machine dependent envvars"""
     if os.uname()[0] == 'Darwin':
         os.environ['CONDA_BUILD_SYSROOT']  = '/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk'
-        os.environ['MACOSX_DEPLOYMENT_TARGET'] = "{0}.{1}.".format(*mac_ver()[0].split('.'))
+        os.environ['MACOSX_DEPLOYMENT_TARGET'] = "10.9"
     
     os.environ['CPU_COUNT'] = "%s" % cpu_count()
     os.environ['FERMI_ADMIN_DIR'] = os.path.dirname(os.path.abspath(__file__))
